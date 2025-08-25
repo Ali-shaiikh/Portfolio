@@ -1,0 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Modern Tech System Colors */
+    --color-background: #0A0E1A; /* Deep space navy */
+    --color-foreground: #F8FAFC; /* Clean white */
+    --color-border: #1E293B; /* Slate-800 */
+    --color-input: #1E293B; /* Slate-800 */
+    --color-ring: #3B82F6; /* Blue-500 */
+    
+    /* Card & Surface Colors */
+    --color-card: #1E293B; /* Slate-800 */
+    --color-card-foreground: #F8FAFC; /* Clean white */
+    --color-popover: #1E293B; /* Slate-800 */
+    --color-popover-foreground: #F8FAFC; /* Clean white */
+    
+    /* Muted Colors */
+    --color-muted: #475569; /* Slate-600 */
+    --color-muted-foreground: #94A3B8; /* Slate-400 */
+    
+    /* Brand Primary Colors */
+    --color-primary: #0F172A; /* Slate-900 */
+    --color-primary-foreground: #F8FAFC; /* Clean white */
+    
+    /* Brand Secondary Colors */
+    --color-secondary: #334155; /* Slate-700 */
+    --color-secondary-foreground: #F8FAFC; /* Clean white */
+    
+    /* Modern Tech Accent Colors */
+    --color-accent: #3B82F6; /* Blue-500 - Primary tech blue */
+    --color-accent-foreground: #F8FAFC; /* Clean white */
+    
+    /* Status Colors */
+    --color-destructive: #EF4444; /* Red-500 */
+    --color-destructive-foreground: #F8FAFC; /* Clean white */
+    
+    --color-success: #10B981; /* Emerald-500 */
+    --color-success-foreground: #F8FAFC; /* Clean white */
+    
+    --color-warning: #F59E0B; /* Amber-500 */
+    --color-warning-foreground: #F8FAFC; /* Clean white */
+    
+    --color-error: #EF4444; /* Red-500 */
+    --color-error-foreground: #F8FAFC; /* Clean white */
+    
+    /* Futuristic Tech Specific Colors */
+    --color-tech-blue: #3B82F6; /* Blue-500 */
+    --color-tech-purple: #8B5CF6; /* Violet-500 */
+    --color-tech-emerald: #10B981; /* Emerald-500 */
+    --color-tech-orange: #F97316; /* Orange-500 */
+    --color-neural-network: #06B6D4; /* Cyan-500 */
+    --color-quantum-violet: #A855F7; /* Purple-500 */
+    --color-deep-space: #0F172A; /* Slate-900 */
+    --color-surface-glass: #1E293B; /* Slate-800 */
+    --color-hologram-blue: #0EA5E9; /* Sky-500 */
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .font-space {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  /* Modern Tech Glow Effects */
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.1);
+  }
+  
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1);
+  }
+  
+  .glow-emerald {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1);
+  }
+  
+  .glow-orange {
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22, 0.1);
+  }
+  
+  .glow-intense-blue {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.6), 
+                0 0 15px rgba(59, 130, 246, 0.4), 
+                0 0 30px rgba(59, 130, 246, 0.2);
+  }
+  
+  .glow-hologram {
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.4), 
+                0 0 20px rgba(14, 165, 233, 0.2), 
+                0 0 40px rgba(14, 165, 233, 0.1);
+  }
+  
+  /* Glass Morphism Card Effect */
+  .glass-card {
+    backdrop-filter: blur(16px) saturate(180%);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 12px;
+    transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.7s ease;
+  }
+  
+  .glass-card:hover {
+    transform: translateY(-4px) rotateX(2deg);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+  }
+  
+  .glass-card:hover::before {
+    left: 100%;
+  }
+  
+  /* Tech Border Animation */
+  .tech-border {
+    position: relative;
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .tech-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--color-tech-blue), var(--color-tech-purple), var(--color-tech-emerald));
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+  
+  .tech-border:hover::before {
+    opacity: 0.3;
+  }
+  
+  .tech-border:focus-within::before {
+    opacity: 0.5;
+  }
+  
+  /* Holographic Text Effect */
+  .holographic-text {
+    background: linear-gradient(45deg, var(--color-tech-blue), var(--color-tech-purple), var(--color-hologram-blue));
+    background-size: 300% 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: holographic-shift 3s ease-in-out infinite;
+  }
+  
+  @keyframes holographic-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  /* Neural Network Animation */
+  .neural-network {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .neural-network::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--color-neural-network), transparent);
+    opacity: 0.3;
+    animation: neural-pulse 2.5s ease-in-out infinite;
+  }
+  
+  @keyframes neural-pulse {
+    0% { left: -100%; opacity: 0; }
+    50% { opacity: 0.3; }
+    100% { left: 100%; opacity: 0; }
+  }
+  
+  /* Quantum Glow Effect */
+  .quantum-glow {
+    animation: quantum-pulse 3s ease-in-out infinite alternate;
+  }
+  
+  @keyframes quantum-pulse {
+    from {
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      transform: scale(1);
+    }
+    to {
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+      transform: scale(1.02);
+    }
+  }
+  
+  /* Data Stream Effect */
+  .data-stream {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .data-stream::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background-image: 
+      radial-gradient(2px 2px at 25px 35px, var(--color-tech-blue), transparent),
+      radial-gradient(2px 2px at 50px 75px, var(--color-tech-purple), transparent),
+      radial-gradient(2px 2px at 80px 45px, var(--color-neural-network), transparent);
+    background-repeat: repeat;
+    background-size: 120px 120px;
+    animation: data-flow 25s linear infinite;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  
+  @keyframes data-flow {
+    0% { transform: translateY(-50%); }
+    100% { transform: translateY(0%); }
+  }
+  
+  /* Interactive Hover Effects */
+  .interactive-element {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .interactive-element:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+  }
+  
+  .interactive-element:active {
+    transform: translateY(0) scale(0.98);
+  }
+  
+  /* Circuit Board Pattern */
+  .circuit-pattern {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .circuit-pattern::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+      linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  
+  /* Progress Bar Animation */
+  .progress-bar {
+    position: relative;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    background: linear-gradient(90deg, var(--color-tech-blue), var(--color-tech-purple));
+    border-radius: 50px;
+    position: relative;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progress-shine 2s ease-in-out infinite;
+  }
+  
+  @keyframes progress-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+}
+
+@layer utilities {
+  /* Text Effects */
+  .text-glow-blue {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  .text-glow-purple {
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+  
+  .text-glow-emerald {
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.3);
+  }
+  
+  .text-glow-orange {
+    text-shadow: 0 0 10px rgba(249, 115, 22, 0.5), 0 0 20px rgba(249, 115, 22, 0.3);
+  }
+  
+  /* Background Gradients */
+  .bg-gradient-tech {
+    background: linear-gradient(135deg, var(--color-deep-space) 0%, var(--color-background) 50%, var(--color-surface-glass) 100%);
+  }
+  
+  .bg-gradient-neural {
+    background: linear-gradient(135deg, var(--color-tech-blue) 0%, var(--color-tech-purple) 100%);
+  }
+  
+  .bg-gradient-hologram {
+    background: linear-gradient(135deg, var(--color-hologram-blue) 0%, var(--color-quantum-violet) 50%, var(--color-neural-network) 100%);
+  }
+  
+  /* Animation Delays */
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+  
+  .animation-delay-700 {
+    animation-delay: 700ms;
+  }
+  
+  .animation-delay-1000 {
+    animation-delay: 1000ms;
+  }
+  
+  /* Modern spacing utilities */
+  .space-tech {
+    margin: 0 0 1.5rem 0;
+  }
+  
+  /* Interactive elements */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+  }
+  
+  /* Responsive text sizing */
+  .text-responsive-lg {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+  }
+  
+  .text-responsive-xl {
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+  
+  .text-responsive-2xl {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+  }
+}
