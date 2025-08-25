@@ -12,11 +12,16 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+      
+      // Close mobile menu when scrolling
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMobileMenuOpen]);
 
   const navigationItems = [
     { name: 'Home', path: '/', icon: 'Home', section: 'hero' },
@@ -159,35 +164,64 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-cyberpunk border-b border-accent/20 glow-cyan">
-            <nav className="px-6 py-4 space-y-2">
-              {navigationItems?.map((item) => (
+          <div className="lg:hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-md">
+            <div className="flex flex-col h-full bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl">
+              {/* Header with close button */}
+              <div className="flex items-center justify-between p-6 border-b border-accent/20 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-tech-blue to-tech-purple rounded-lg flex items-center justify-center">
+                    <span className="font-mono text-sm font-bold text-white">AS</span>
+                  </div>
+                  <div>
+                    <h1 className="font-mono text-lg font-bold text-foreground">Ali Shaikh</h1>
+                    <p className="font-mono text-xs text-muted-foreground">Visionary Technologist</p>
+                  </div>
+                </div>
                 <button
-                  key={item?.name}
-                  onClick={() => handleNavigation(item)}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md font-mono text-sm font-medium transition-all duration-300 ${
-                    location?.pathname === item?.path
-                      ? 'text-accent bg-accent/10 glow-cyan' :'text-muted-foreground hover:text-accent hover:bg-accent/5'
-                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-300"
                 >
-                  <Icon name={item?.icon} size={18} />
-                  <span>{item?.name}</span>
+                  <Icon name="X" size={24} />
                 </button>
-              ))}
-              <div className="pt-4 border-t border-accent/20">
+              </div>
+              
+              {/* Navigation Items */}
+              <nav className="flex-1 px-6 py-8 space-y-3 bg-gradient-to-b from-slate-800/60 to-slate-900/60 backdrop-blur-lg">
+                {navigationItems?.map((item, index) => (
+                  <button
+                    key={item?.name}
+                    onClick={() => handleNavigation(item)}
+                    className={`w-full flex items-center space-x-4 px-6 py-4 rounded-xl font-mono text-base font-medium transition-all duration-300 backdrop-blur-sm ${
+                      location?.pathname === item?.path
+                        ? 'text-accent bg-gradient-to-r from-tech-blue/30 to-tech-purple/30 glow-cyan border border-accent/40 shadow-lg' :'text-muted-foreground hover:text-accent hover:bg-gradient-to-r hover:from-tech-blue/20 hover:to-tech-purple/20 hover:shadow-md bg-gradient-to-r from-slate-800/70 to-slate-700/70'
+                    }`}
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm ${
+                      location?.pathname === item?.path ? 'bg-gradient-to-br from-tech-blue/40 to-tech-purple/40' : 'bg-gradient-to-br from-slate-700/70 to-slate-600/70'
+                    }`}>
+                      <Icon name={item?.icon} size={20} />
+                    </div>
+                    <span className="text-left">{item?.name}</span>
+                  </button>
+                ))}
+              </nav>
+              
+              {/* Contact Button */}
+              <div className="p-6 border-t border-accent/20 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-lg">
                 <Button
                   variant="outline"
                   fullWidth
                   onClick={handleContactClick}
-                  className="font-orbitron font-semibold border-accent text-accent hover:bg-accent hover:text-accent-foreground glow-cyan hover:glow-intense-cyan transition-all duration-300"
+                  className="font-orbitron font-semibold border-accent text-accent hover:bg-accent hover:text-accent-foreground glow-cyan hover:glow-intense-cyan transition-all duration-300 py-4 rounded-xl"
                   iconName="Mail"
                   iconPosition="left"
-                  iconSize={16}
+                  iconSize={18}
                 >
                   Start Conversation
                 </Button>
               </div>
-            </nav>
+            </div>
           </div>
         )}
       </header>
