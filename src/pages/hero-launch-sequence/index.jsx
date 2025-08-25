@@ -153,7 +153,7 @@ const HeroLaunchSequence = () => {
         'Multi-database support'
       ],
       status: 'Production',
-      link: '#'
+      link: 'https://github.com/Ali-shaiikh/Querify'
     },
     {
       title: 'Quizzora',
@@ -166,7 +166,7 @@ const HeroLaunchSequence = () => {
         'Collaborative learning features'
       ],
       status: 'Development',
-      link: '#'
+      link: 'https://github.com/Ali-shaiikh/Quizzora'
     }
   ];
 
