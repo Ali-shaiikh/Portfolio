@@ -55,23 +55,27 @@ To get a copy of this project up and running on your local machine, follow these
 
 ---
 
-## 📁 Project Structure
+### 📁 Project Structure
 
 The project follows a clean and logical structure to ensure scalability and maintainability.
 
+```
 
 Portfolio/
-├── public/                     # Static assets (images, fonts, etc.)
+├── public/                     \# Static assets (images, fonts, etc.)
 ├── src/
-│   ├── components/             # Reusable UI components
-│   ├── pages/                  # Page-level components
-│   ├── styles/                 # Global styles and CSS files
-│   ├── App.jsx                 # The main application component
-│   └── index.jsx               # The application's entry point
-├── .env                        # Environment variables
-├── index.html                  # HTML template for the app
-├── package.json                # Project dependencies and scripts
-└── tailwind.config.js          # Tailwind CSS configuration
+│   ├── components/             \# Reusable UI components
+│   ├── pages/                  \# Page-level components
+│   ├── styles/                 \# Global styles and CSS files
+│   ├── App.jsx                 \# The main application component
+│   └── index.jsx               \# The application's entry point
+├── .env                        \# Environment variables
+├── index.html                  \# HTML template for the app
+├── package.json                \# Project dependencies and scripts
+└── tailwind.config.js          \# Tailwind CSS configuration
+
+```
+```
 
 ---
 
