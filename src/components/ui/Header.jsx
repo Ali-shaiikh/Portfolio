@@ -3,11 +3,15 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Button from './Button';
 import Icon from '../AppIcon';
 
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,13 +49,9 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
-  const handleContactClick = () => {
-    const email = 'alishaikhh15@email.com';
-    const subject = 'Portfolio Contact - Let\'s Connect!';
-    const body = 'Hi Ali,\n\nI came across your portfolio and would like to discuss...';
-    
-    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.open(mailtoLink, '_blank');
+  const handleResumeClick = () => {
+    // Open resume file from assets
+    window.open('/assets/images/Resume_Ali.pdf', '_blank');
     setIsMobileMenuOpen(false);
   };
 
@@ -60,7 +60,7 @@ const Header = () => {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled 
-            ? 'bg-background/95 backdrop-blur-cyberpunk border-b border-accent/20 glow-cyan' :'bg-transparent'
+            ? 'bg-background/95 backdrop-blur-cyberpunk border-b border-accent/20 glow-cyan' :'bg-background/80 backdrop-blur-sm'
         }`}
       >
         <div className="w-full">
@@ -137,19 +137,21 @@ const Header = () => {
               ))}
             </nav>
 
-            {/* CTA Button */}
+            {/* CTA Buttons */}
             <div className="hidden lg:flex items-center space-x-4">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handleContactClick}
+                onClick={handleResumeClick}
                 className="font-orbitron font-semibold border-accent text-accent hover:bg-accent hover:text-accent-foreground glow-cyan hover:glow-intense-cyan transition-all duration-300"
-                iconName="Mail"
+                iconName="FileText"
                 iconPosition="left"
                 iconSize={16}
               >
-                Start Conversation
+                View Resume
               </Button>
+              
+
             </div>
 
             {/* Mobile Menu Button */}
@@ -207,19 +209,21 @@ const Header = () => {
                 ))}
               </nav>
               
-              {/* Contact Button */}
-              <div className="p-6 border-t border-accent/20 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-lg">
+              {/* Action Buttons */}
+              <div className="p-6 border-t border-accent/20 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-lg space-y-3">
                 <Button
                   variant="outline"
                   fullWidth
-                  onClick={handleContactClick}
+                  onClick={handleResumeClick}
                   className="font-orbitron font-semibold border-accent text-accent hover:bg-accent hover:text-accent-foreground glow-cyan hover:glow-intense-cyan transition-all duration-300 py-4 rounded-xl"
-                  iconName="Mail"
+                  iconName="FileText"
                   iconPosition="left"
                   iconSize={18}
                 >
-                  Start Conversation
+                  View Resume
                 </Button>
+                
+
               </div>
             </div>
           </div>

@@ -72,7 +72,7 @@ const ParticleBackground = () => {
         particle?.x, particle?.y, 0,
         particle?.x, particle?.y, particle?.size * 3
       );
-      gradient?.addColorStop(0, `${particle?.color}${Math.floor(pulsedOpacity * 255)?.toString(16)?.padStart(2, '0')}`);
+      gradient?.addColorStop(0, `${particle?.color}${Math.floor(pulsedOpacity * 255).toString(16).padStart(2, '0')}`);
       gradient?.addColorStop(1, `${particle?.color}00`);
       
       ctx.fillStyle = gradient;
@@ -91,7 +91,7 @@ const ParticleBackground = () => {
         node?.x, node?.y, 0,
         node?.x, node?.y, size * 2
       );
-      gradient?.addColorStop(0, `${node?.color}${Math.floor((node?.opacity * energyPulse) * 255)?.toString(16)?.padStart(2, '0')}`);
+      gradient?.addColorStop(0, `${node?.color}${Math.floor((node?.opacity * energyPulse) * 255).toString(16).padStart(2, '0')}`);
       gradient?.addColorStop(0.7, `${node?.color}40`);
       gradient?.addColorStop(1, `${node?.color}00`);
       
@@ -101,7 +101,7 @@ const ParticleBackground = () => {
       // Draw pulsing ring
       ctx?.beginPath();
       ctx?.arc(node?.x, node?.y, size * 1.5, 0, Math.PI * 2);
-      ctx.strokeStyle = `${node?.color}${Math.floor((energyPulse * 0.3) * 255)?.toString(16)?.padStart(2, '0')}`;
+      ctx.strokeStyle = `${node?.color}${Math.floor((energyPulse * 0.3) * 255).toString(16).padStart(2, '0')}`;
       ctx.lineWidth = 1;
       ctx?.stroke();
     };
@@ -125,7 +125,7 @@ const ParticleBackground = () => {
             ctx?.beginPath();
             ctx?.moveTo(particles?.[i]?.x, particles?.[i]?.y);
             ctx?.lineTo(particles?.[j]?.x, particles?.[j]?.y);
-            ctx.strokeStyle = `#3B82F6${Math.floor((opacity * pulse) * 255)?.toString(16)?.padStart(2, '0')}`;
+            ctx.strokeStyle = `#3B82F6${Math.floor((opacity * pulse) * 255).toString(16).padStart(2, '0')}`;
             ctx.lineWidth = 0.8;
             ctx?.stroke();
           }
@@ -142,13 +142,13 @@ const ParticleBackground = () => {
           
           ctx?.beginPath();
           ctx?.arc(particles?.[i]?.x, particles?.[i]?.y, pulseSize, 0, Math.PI * 2);
-          ctx.fillStyle = `#0EA5E9${Math.floor((influence * 0.6) * 255)?.toString(16)?.padStart(2, '0')}`;
+          ctx.fillStyle = `#0EA5E9${Math.floor((influence * 0.6) * 255).toString(16).padStart(2, '0')}`;
           ctx?.fill();
           
           // Create ripple effect
           ctx?.beginPath();
           ctx?.arc(particles?.[i]?.x, particles?.[i]?.y, pulseSize * 2, 0, Math.PI * 2);
-          ctx.strokeStyle = `#0EA5E9${Math.floor((influence * 0.3) * 255)?.toString(16)?.padStart(2, '0')}`;
+          ctx.strokeStyle = `#0EA5E9${Math.floor((influence * 0.3) * 255).toString(16).padStart(2, '0')}`;
           ctx.lineWidth = 1;
           ctx?.stroke();
         }

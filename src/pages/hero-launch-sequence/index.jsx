@@ -9,11 +9,20 @@ import ParticleBackground from './components/ParticleBackground';
 import HeroContent from './components/HeroContent';
 import QuickNavigation from './components/QuickNavigation';
 import FloatingElements from './components/FloatingElements';
+
+
 import emailjs from '@emailjs/browser';
+
+// Initialize EmailJS
+emailjs.init("qDIjzDzagkAric3xI"); // Your EmailJS public key
+
+// Alternative initialization method
+// emailjs.init("qDIjzDzagkAric3xI", "service_68b8y3u");
 
 const HeroLaunchSequence = () => {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,18 +32,21 @@ const HeroLaunchSequence = () => {
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
 
   useEffect(() => {
-    // Simulate loading sequence
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 200);
-
-    return () => clearTimeout(timer);
+    // Set loaded immediately - no loading animation
+    setIsLoaded(true);
   }, []);
 
   const handleExploreClick = () => {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const projectsSection = document.getElementById('projects');
+    if (projectsSection) {
+      projectsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleConnectClick = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -51,29 +63,21 @@ const HeroLaunchSequence = () => {
     setSubmitStatus(null);
 
     try {
-      // Option 1: EmailJS (requires setup)
-      // await emailjs.send(
-      //   'YOUR_SERVICE_ID',
-      //   'YOUR_TEMPLATE_ID',
-      //   {
-      //     from_name: formData.name,
-      //     from_email: formData.email,
-      //     message: formData.message,
-      //   },
-      //   'YOUR_PUBLIC_KEY'
-      // );
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        'service_10j91ll', // Your EmailJS service ID
+        'template_t0u3bzl', // Your EmailJS template ID
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_name: 'Ali Shaikh',
+          reply_to: formData.email,
+        },
+        'qDIjzDzagkAric3xI' // Your EmailJS public key
+      );
 
-      // Option 2: Simple console log for now (you can replace with actual email service)
-      console.log('Contact Form Submission:', {
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        timestamp: new Date().toISOString()
-      });
-
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
+      console.log('Email sent successfully:', result);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
       
@@ -81,7 +85,15 @@ const HeroLaunchSequence = () => {
       alert('Thank you for your message! I\'ll get back to you soon.');
       
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error sending email:', error);
+      console.error('Error message:', error.message);
+      console.error('Error status:', error.status);
+      console.error('Error details:', {
+        serviceId: 'service_10j91ll',
+        templateId: 'template_t0u3bzl',
+        publicKey: 'qDIjzDzagkAric3xI',
+        formData: formData
+      });
       setSubmitStatus('error');
       alert('Sorry, there was an error sending your message. Please try again or contact me directly.');
     } finally {
@@ -153,7 +165,8 @@ const HeroLaunchSequence = () => {
         'Multi-database support'
       ],
       status: 'Production',
-      link: 'https://github.com/Ali-shaiikh/Querify'
+      link: 'https://github.com/Ali-shaiikh/Querify',
+      demo: 'https://querifyy.vercel.app/'
     },
     {
       title: 'Quizzora',
@@ -167,7 +180,22 @@ const HeroLaunchSequence = () => {
       ],
       status: 'Development',
       link: 'https://github.com/Ali-shaiikh/Quizzora'
-    }
+    },
+                    {
+                  title: 'CO-LAB Vault',
+                  description: 'A secure and user-friendly collaborative file sharing platform that allows quick transfer of files without sign-up, making teamwork seamless and efficient.',
+                  tech: ['Node.js', 'Express.js', 'MongoDB', 'EJS', 'CSS', 'JavaScript'],
+                  features: [
+                    'Upload and share files up to 100MB',
+                    'Instant sharing via email links',
+                    'No login or authentication required',
+                    'Automated file cleanup with cron jobs',
+                    'Responsive and lightweight UI'
+                  ],
+                  status: 'Stable',
+                  link: 'https://github.com/Ali-shaiikh/CO-LAB-Vault',
+                  demo: 'https://co-lab-vault.vercel.app/'
+                }
   ];
 
   const experiences = [
@@ -197,7 +225,7 @@ const HeroLaunchSequence = () => {
     }
   ];
 
-  return (
+    return (
     <div className="relative min-h-screen bg-gradient-tech overflow-hidden data-stream">
       {/* Header */}
       <Header />
@@ -207,16 +235,6 @@ const HeroLaunchSequence = () => {
       
       {/* Floating Elements */}
       <FloatingElements />
-      
-      {/* Loading Overlay */}
-      <div className={`fixed inset-0 bg-background z-50 flex items-center justify-center transition-opacity duration-1000 ${
-        isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}>
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4 mx-auto glow-blue"></div>
-          <p className="font-mono text-accent animate-pulse">Loading Future Interface...</p>
-        </div>
-      </div>
 
       {/* Main Content */}
       <main className={`relative z-10 transition-all duration-1000 ${
@@ -224,7 +242,7 @@ const HeroLaunchSequence = () => {
       }`}>
         {/* Hero Section */}
         <section id="hero" className="min-h-screen">
-          <HeroContent onExploreClick={handleExploreClick} />
+          <HeroContent onExploreClick={handleExploreClick} onConnectClick={handleConnectClick} />
         </section>
         
         {/* About Me Section */}
@@ -409,15 +427,28 @@ const HeroLaunchSequence = () => {
                     </div>
                   </div>
                   
-                  <Button
-                    variant="outline"
-                    onClick={() => window?.open(project?.link, '_blank')}
-                    className="w-full border-tech-blue text-tech-blue hover:bg-tech-blue hover:text-white glow-blue interactive-element"
-                    iconName="ExternalLink"
-                    iconPosition="right"
-                  >
-                    View Project
-                  </Button>
+                  <div className="flex gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => window?.open(project?.link, '_blank')}
+                      className="flex-1 border-tech-blue text-tech-blue hover:bg-tech-blue hover:text-white glow-blue interactive-element"
+                      iconName="Github"
+                      iconPosition="left"
+                    >
+                      View Project
+                    </Button>
+                    {project?.demo && (
+                      <Button
+                        variant="default"
+                        onClick={() => window?.open(project?.demo, '_blank')}
+                        className="flex-1 bg-tech-emerald text-white hover:bg-tech-emerald/90 glow-emerald interactive-element"
+                        iconName="ExternalLink"
+                        iconPosition="left"
+                      >
+                        Live Demo
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

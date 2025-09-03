@@ -27,7 +27,7 @@ const FloatingElements = () => {
           size: 0.6 + Math.random() * 0.8,
           rotation: Math.random() * 360,
           rotationSpeed: (Math.random() - 0.5) * 2,
-          opacity: 0.1 + Math.random() * 0.2
+          opacity: 0.05 + Math.random() * 0.1
         });
       }
       
@@ -97,58 +97,36 @@ const FloatingElements = () => {
 
     createFloatingElements();
     createCodeSnippets();
+  }, []);
 
-    const handleMouseMove = (e) => {
+  const handleMouseDown = (e, elementId) => {
+    setDraggedElement(elementId);
+    setMousePosition({ x: e.clientX, y: e.clientY });
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseMove = (e) => {
+    if (draggedElement) {
       setMousePosition({ x: e.clientX, y: e.clientY });
-      
-      if (draggedElement) {
-        const dx = e.clientX - dragStartRef.current.x;
-        const dy = e.clientY - dragStartRef.current.y;
-        
-        if (draggedElement.symbol) {
-          // Dragging geometric elements
-          setElements(prev => prev.map(el => 
-            el.id === draggedElement.id 
-              ? { ...el, x: Math.max(0, Math.min(100, el.x + dx / window.innerWidth * 100)), 
-                         y: Math.max(0, Math.min(100, el.y + dy / window.innerHeight * 100)) }
-              : el
-          ));
-        } else {
-          // Dragging code snippets
-          setCodeSnippets(prev => prev.map(snippet => 
-            snippet.id === draggedElement.id 
-              ? { ...snippet, x: Math.max(0, Math.min(100, snippet.x + dx / window.innerWidth * 100)), 
-                             y: Math.max(0, Math.min(100, snippet.y + dy / window.innerHeight * 100)) }
-              : snippet
-          ));
-        }
-        
-        dragStartRef.current = { x: e.clientX, y: e.clientY };
-      }
-    };
+    }
+  };
 
-    const handleMouseUp = () => {
-      setDraggedElement(null);
-    };
+  const handleMouseUp = () => {
+    setDraggedElement(null);
+  };
 
-    const handleMouseDown = (e, element) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setDraggedElement(element);
-      dragStartRef.current = { x: e.clientX, y: e.clientY };
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-
+  useEffect(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [draggedElement]);
 
   return (
-    <div className="fixed inset-0 pointer-events-auto z-5 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-5 overflow-hidden">
       {/* Geometric Tech Elements */}
       {elements?.map((element) => (
         <div
@@ -159,13 +137,13 @@ const FloatingElements = () => {
             top: `${element?.y}%`,
             fontSize: `${element?.size}rem`,
             opacity: element?.opacity,
+            transform: `rotate(${element?.rotation}deg)`,
             animationDelay: `${element?.delay}s`,
             animationDuration: `${element?.duration}s`,
-            transform: `rotate(${element?.rotation}deg)`,
-            zIndex: draggedElement?.id === element?.id ? 10 : 1,
-            pointerEvents: 'auto'
+            zIndex: 5,
+            pointerEvents: 'none'
           }}
-          onMouseDown={(e) => handleMouseDown(e, element)}
+          onMouseDown={(e) => handleMouseDown(e, element?.id)}
         >
           <div 
             className="animate-bounce"
@@ -191,10 +169,10 @@ const FloatingElements = () => {
             transform: `rotate(${snippet?.rotation}deg)`,
             animationDelay: `${snippet?.delay}s`,
             animationDuration: '4s',
-            pointerEvents: 'auto',
-            zIndex: draggedElement?.id === snippet?.id ? 10 : 1
+            pointerEvents: 'none',
+            zIndex: 5
           }}
-          onMouseDown={(e) => handleMouseDown(e, snippet)}
+
         >
           <div className="relative">
             <div className="absolute -inset-2 bg-gradient-to-r from-tech-blue/10 to-tech-purple/10 rounded blur-sm"></div>
@@ -208,16 +186,17 @@ const FloatingElements = () => {
       {/* Animated Tech Particles */}
       <div className="absolute inset-0">
         {Array.from({ length: 8 })?.map((_, index) => (
-          <div
-            key={`particle-${index}`}
-            className="absolute w-1 h-1 bg-tech-blue rounded-full opacity-40 animate-ping"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${2 + Math.random() * 3}s`
-            }}
-          />
+                  <div
+          key={`particle-${index}`}
+          className="absolute w-1 h-1 bg-tech-blue rounded-full opacity-40 animate-ping"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 5}s`,
+            animationDuration: `${2 + Math.random() * 3}s`,
+            zIndex: 12
+          }}
+        />
         ))}
       </div>
       
@@ -262,7 +241,7 @@ const FloatingElements = () => {
         ))}
       </div>
       
-      <style jsx>{`
+      <style>{`
         @keyframes dataFlow {
           0% {
             transform: translateX(-100%);
