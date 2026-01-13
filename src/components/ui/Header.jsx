@@ -51,7 +51,7 @@ const Header = () => {
 
   const handleResumeClick = () => {
     // Open resume file from assets
-    window.open('/assets/images/Resume_Ali.pdf', '_blank');
+    window.open('/assets/images/Ali-Shaikh_Resume.pdf', '_blank');
     setIsMobileMenuOpen(false);
   };
 
