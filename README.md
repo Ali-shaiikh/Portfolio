@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ALI.INIT — Personal Portfolio
+
+> Not a website *about* an AI engineer. It *is* what an AI engineer would build for themselves.
+
+Live at → **[your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)**
+
+---
+
+## Overview
+
+A precision dark portfolio built as a living interface — part editorial magazine, part command center. Every section has a distinct interactive personality: terminals you can type in, a draggable skill constellation, expandable project case studies, and an experience section that reads like a `git log`.
+
+---
+
+## Sections
+
+| Section | Design |
+|---|---|
+| **Hero** | Massive display type, type animation, mini interactive terminal, profile photo with HUD overlays |
+| **About** | Manifesto text + typewriter `cat about.txt` terminal |
+| **Skills** | Scrolling ticker + draggable/zoomable D3 force constellation graph |
+| **Projects** | Numbered case studies — click to expand with metrics, stack, links |
+| **Experience** | Styled as `git log --all --graph` output |
+| **Certifications** | Horizontal scroll shelf — all cards link to verified credentials |
+| **Contact** | Fully interactive terminal (`mail ali`, `github`, `linkedin`, `help`) |
+
+---
+
+## Stack
+
+- **Framework** — Next.js 16 (App Router)
+- **Language** — TypeScript
+- **Styling** — Tailwind CSS v4 + custom CSS design system
+- **Animation** — Framer Motion
+- **Graph** — react-force-graph-2d (D3 under the hood)
+- **Icons** — @tabler/icons-react
+- **Type animation** — react-type-animation
+- **Fonts** — Bebas Neue · Syne · Fira Code
+
+---
+
+## Design System
+
+```css
+--bg:      #08080F   /* deep ink background    */
+--accent:  #4DFFB4   /* mint green — used once */
+--orange:  #FF6B35   /* hover / interaction    */
+--text:    #EDEDF0
+--surface: rgba(255,255,255,0.04)  /* glass cards */
+```
+
+**Typography**
+- `Bebas Neue` — display / section headers
+- `Syne` — body / subheadings
+- `Fira Code` — all technical content, terminals
+
+---
+
+## Features
+
+- Interactive terminals in Hero and Contact (type real commands)
+- Draggable, zoomable D3 skill constellation
+- Custom cursor — dot + trailing ring with link hover states
+- Scroll-aware navbar — transparent → frosted glass on scroll
+- Konami code easter egg — ↑ ↑ ↓ ↓ ← → ← → B A
+- Fully responsive — mobile menu, adaptive layouts
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
 
-## Learn More
+Deployed on Vercel. No environment variables required.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Author
 
-## Deploy on Vercel
+**Ali Shaikh** — AI Engineer & CS Undergraduate, Mumbai
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[GitHub](https://github.com/Ali-shaiikh) · [LinkedIn](https://www.linkedin.com/in/ali-shaikhh/) · [Email](mailto:alishaikhh15@gmail.com)
