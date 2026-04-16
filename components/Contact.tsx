@@ -15,13 +15,31 @@ const CMDS: Record<string, { lines: string[]; action?: () => void }> = {
     lines: ["→ opening LinkedIn..."],
     action: () => window.open("https://www.linkedin.com/in/ali-shaikhh/", "_blank"),
   },
+  resume: {
+    lines: ["fetching resume...", "", "✓ opening ali-shaikh-resume.pdf"],
+    action: () => window.open("/resume.pdf", "_blank"),
+  },
+  availability: {
+    lines: [
+      "checking calendar...",
+      "",
+      "status      : ● open to work",
+      "looking for : full-time · internship · collab",
+      "start date  : immediate",
+      "location    : Mumbai / Remote",
+      "",
+      "✓ available for new opportunities.",
+    ],
+  },
   help: {
     lines: [
       "available commands:",
-      "  mail ali   — send me an email",
-      "  github     — view my GitHub",
-      "  linkedin   — connect on LinkedIn",
-      "  clear      — reset terminal",
+      "  mail ali      — send me an email",
+      "  github        — view my GitHub",
+      "  linkedin      — connect on LinkedIn",
+      "  resume        — download my resume",
+      "  availability  — check my status",
+      "  clear         — reset terminal",
     ],
   },
 };

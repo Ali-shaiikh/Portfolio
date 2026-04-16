@@ -7,8 +7,8 @@ import Image from "next/image";
 const CMDS: Record<string, string[]> = {
   whoami:   ["Ali Shaikh — AI Engineer, CS Undergraduate (Mumbai)", "Co-Facilitator @ Google Cloud Arcade · Co-Founder @ ArcadeOps", "Building LLM apps, RAG pipelines, and scalable AI systems."],
   skills:   ["Languages : Python · SQL · JavaScript · C++", "AI/ML     : LangChain · PyTorch · TensorFlow · RAG · HuggingFace", "Backend   : FastAPI · Flask · Node.js · Express", "Cloud     : GCP (Vertex AI, Cloud Run) · AWS · MongoDB · FAISS"],
-  projects: ["01 FarmChain  — AI-Powered Agri Marketplace & Advisory", "02 Querify    — NL → SQL Generator (live: querifyy.vercel.app)", "03 Quizzora   — PDF/Audio/Video → Quiz via GPT-4 + Whisper"],
-  contact:  ["email: alishaikhh15@gmail.com", "github: github.com/Ali-shaiikh", "linkedin: linkedin.com/in/ali-shaikhh"],
+  projects: ["01 FarmChain          — AI-Powered Agri Marketplace & Advisory", "02 Quizzora          — PDF/Audio/Video → Quiz via GPT-4 + Whisper", "03 Innovation Furniture — E-Commerce Platform (live: innovationfurniture.in)", "04 Querify           — NL → SQL Generator (live: querifyy.vercel.app)", "05 CO-LAB Vault      — Collab Platform (live: co-lab-vault.vercel.app)"],
+  contact:  ["email: alishaikhh15@gmail.com", "github: github.com/Ali-shaiikh", "linkedin: linkedin.com/in/ali-shaikhh", "resume: ali-shaikh.vercel.app/resume.pdf"],
   help:     ["available commands:", "  whoami   — who is this", "  skills   — tech stack", "  projects — what i built", "  contact  — reach me", "  clear    — reset"],
 };
 
@@ -218,7 +218,7 @@ export default function Hero() {
                 transition={{ delay: 1.5 }}
                 className="absolute -right-16 bottom-12 glass px-3 py-1.5 flex items-center gap-2"
               >
-                <span className="mono text-xs" style={{ color: "var(--orange, #FF6B35)" }}>3 projects</span>
+                <span className="mono text-xs" style={{ color: "var(--orange, #FF6B35)" }}>5 projects</span>
               </motion.div>
 
               {/* Photo card */}

@@ -115,6 +115,17 @@ export default function Navbar() {
                   {link.label.toUpperCase()}
                 </motion.button>
               ))}
+              <motion.a
+                href="/resume.pdf"
+                target="_blank"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: NAV_LINKS.length * 0.08 }}
+                onClick={() => setMenuOpen(false)}
+                className="mono text-sm px-6 py-3 border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all tracking-widest"
+              >
+                RESUME
+              </motion.a>
             </div>
           </motion.div>
         )}
