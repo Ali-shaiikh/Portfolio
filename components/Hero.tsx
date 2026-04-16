@@ -176,9 +176,9 @@ export default function Hero() {
                 { top: 8, right: 8, rotate: 90 },
                 { bottom: 8, right: 8, rotate: 180 },
                 { bottom: 8, left: 8, rotate: 270 },
-              ].map((pos, i) => (
+              ].map(({ rotate, ...pos }, i) => (
                 <div key={i} className="absolute pointer-events-none" style={{ ...pos, width: 18, height: 18 }}>
-                  <svg viewBox="0 0 18 18" fill="none" style={{ transform: `rotate(${pos.rotate}deg)` }}>
+                  <svg viewBox="0 0 18 18" fill="none" style={{ transform: `rotate(${rotate}deg)` }}>
                     <path d="M1 10 L1 1 L10 1" stroke="#4DFFB4" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                 </div>
