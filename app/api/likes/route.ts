@@ -10,17 +10,22 @@ const KEY = "portfolio:likes";
 const SEED = 31;
 
 export async function GET() {
-  let count = await redis.get<number>(KEY);
-  if (count === null) {
-    await redis.set(KEY, SEED);
-    count = SEED;
+  try {
+    let count = await redis.get<number>(KEY);
+    if (count === null) { await redis.set(KEY, SEED); count = SEED; }
+    return NextResponse.json({ count });
+  } catch {
+    return NextResponse.json({ count: SEED });
   }
-  return NextResponse.json({ count });
 }
 
 export async function POST() {
-  let count = await redis.get<number>(KEY);
-  if (count === null) await redis.set(KEY, SEED);
-  const next = await redis.incr(KEY);
-  return NextResponse.json({ count: next });
+  try {
+    let count = await redis.get<number>(KEY);
+    if (count === null) await redis.set(KEY, SEED);
+    const next = await redis.incr(KEY);
+    return NextResponse.json({ count: next });
+  } catch {
+    return NextResponse.json({ count: SEED + 1 });
+  }
 }

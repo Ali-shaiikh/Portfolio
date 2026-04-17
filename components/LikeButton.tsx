@@ -9,7 +9,10 @@ export default function LikeButton() {
 
   useEffect(() => {
     setLiked(localStorage.getItem("portfolio-liked") === "true");
-    fetch("/api/likes").then(r => r.json()).then(d => setCount(d.count));
+    fetch("/api/likes")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.count != null) setCount(d.count); })
+      .catch(() => {});
   }, []);
 
   const toggle = async () => {
@@ -18,9 +21,14 @@ export default function LikeButton() {
     setTimeout(() => setBurst(false), 600);
     setLiked(true);
     localStorage.setItem("portfolio-liked", "true");
-    const res = await fetch("/api/likes", { method: "POST" });
-    const data = await res.json();
-    setCount(data.count);
+    setCount(c => (c ?? 31) + 1);
+    try {
+      const res = await fetch("/api/likes", { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        setCount(data.count);
+      }
+    } catch {}
   };
 
   return (
