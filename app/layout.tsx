@@ -38,11 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>
-        <script dangerouslySetInnerHTML={{ __html: "window.history.scrollRestoration='manual';window.scrollTo(0,0);" }} />
-        {children}
-        <Analytics />
-      </body>
+      <body>{children}<Analytics /></body>
     </html>
   );
 }

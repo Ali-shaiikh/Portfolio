@@ -1,3 +1,4 @@
+import ScrollToTop     from "@/components/ScrollToTop";
 import CustomCursor    from "@/components/CustomCursor";
 import KonamiEgg      from "@/components/KonamiEgg";
 import Navbar          from "@/components/Navbar";
@@ -14,6 +15,7 @@ import LikeButton      from "@/components/LikeButton";
 export default function Home() {
   return (
     <>
+      <ScrollToTop />
       <CustomCursor />
       <KonamiEgg />
       <ScrollProgress />
