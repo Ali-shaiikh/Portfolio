@@ -188,7 +188,7 @@ export default function Hero() {
               <motion.div
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.2 }}
-                className="absolute -left-16 top-8 glass px-3 py-1.5 flex items-center gap-2"
+                className="absolute -left-16 top-8 glass px-3 py-1.5 flex items-center gap-2 hidden lg:flex"
               >
                 <span className="dot-live" style={{ width: 6, height: 6 }} />
                 <span className="mono text-xs text-[var(--text-muted)]">Mumbai, IN</span>
@@ -198,7 +198,7 @@ export default function Hero() {
               <motion.div
                 initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.3 }}
-                className="absolute -right-20 top-8 glass px-3 py-1.5"
+                className="absolute -right-20 top-8 glass px-3 py-1.5 hidden lg:block"
               >
                 <span className="mono text-xs text-[var(--accent)]">AI Engineer</span>
               </motion.div>
@@ -207,7 +207,7 @@ export default function Hero() {
               <motion.div
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.4 }}
-                className="absolute -left-14 bottom-12 glass px-3 py-1.5"
+                className="absolute -left-14 bottom-12 glass px-3 py-1.5 hidden lg:block"
               >
                 <span className="mono text-xs text-[var(--text-muted)]">2000+ learners</span>
               </motion.div>
@@ -216,7 +216,7 @@ export default function Hero() {
               <motion.div
                 initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.5 }}
-                className="absolute -right-16 bottom-12 glass px-3 py-1.5 flex items-center gap-2"
+                className="absolute -right-16 bottom-12 glass px-3 py-1.5 flex items-center gap-2 hidden lg:flex"
               >
                 <span className="mono text-xs" style={{ color: "var(--orange, #FF6B35)" }}>5 projects</span>
               </motion.div>
