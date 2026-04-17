@@ -118,6 +118,7 @@ export default function Skills() {
             viewport={{ once: true }} transition={{ duration: 0.8 }}
             className="glass"
             ref={containerRef}
+            style={{ touchAction: "none" }}
           >
             <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
               <span className="dot-live" />
