@@ -2,24 +2,25 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SEED = 142;
-
 export default function LikeButton() {
   const [liked, setLiked] = useState(false);
-  const [count, setCount] = useState(SEED);
+  const [count, setCount] = useState<number | null>(null);
   const [burst, setBurst] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("portfolio-liked");
-    if (stored === "true") { setLiked(true); setCount(SEED + 1); }
+    setLiked(localStorage.getItem("portfolio-liked") === "true");
+    fetch("/api/likes").then(r => r.json()).then(d => setCount(d.count));
   }, []);
 
-  const toggle = () => {
-    const next = !liked;
-    setLiked(next);
-    setCount(next ? SEED + 1 : SEED);
-    localStorage.setItem("portfolio-liked", String(next));
-    if (next) { setBurst(true); setTimeout(() => setBurst(false), 600); }
+  const toggle = async () => {
+    if (liked) return;
+    setBurst(true);
+    setTimeout(() => setBurst(false), 600);
+    setLiked(true);
+    localStorage.setItem("portfolio-liked", "true");
+    const res = await fetch("/api/likes", { method: "POST" });
+    const data = await res.json();
+    setCount(data.count);
   };
 
   return (
@@ -27,7 +28,7 @@ export default function LikeButton() {
       onClick={toggle}
       whileTap={{ scale: 0.88 }}
       className="flex items-center gap-2 group relative"
-      title={liked ? "unlike" : "like this portfolio"}
+      title={liked ? "liked!" : "like this portfolio"}
     >
       <span className="relative">
         <motion.span
@@ -57,7 +58,7 @@ export default function LikeButton() {
         className="mono text-xs transition-colors"
         style={{ color: liked ? "var(--accent)" : "var(--text-dim)" }}
       >
-        {count}
+        {count === null ? "—" : count}
       </span>
     </motion.button>
   );
