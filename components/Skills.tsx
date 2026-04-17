@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import * as d3 from "d3";
+import { forceSimulation, forceLink, forceManyBody, forceCenter, forceCollide } from "d3";
 
 const TICKER = [
   "Python","SQL","JavaScript","C++","FastAPI","Flask","Node.js","Express","React",
@@ -86,49 +86,51 @@ export default function Skills() {
     const nodes: any[] = RAW_NODES.map(n => ({ ...n }));
     const links: any[] = RAW_LINKS.map(l => ({ ...l }));
 
-    const sim = d3.forceSimulation(nodes)
-      .force("link",      d3.forceLink(links).id((d: any) => d.id).distance(70).strength(0.6))
-      .force("charge",    d3.forceManyBody().strength(-180))
-      .force("center",    d3.forceCenter(W / 2, H / 2))
-      .force("collision", d3.forceCollide((d: any) => d.r + 12));
+    const sim = forceSimulation(nodes)
+      .force("link",      forceLink(links).id((d: any) => d.id).distance(70).strength(0.6))
+      .force("charge",    forceManyBody().strength(-180))
+      .force("center",    forceCenter(W / 2, H / 2))
+      .force("collision", forceCollide((d: any) => d.r + 12));
 
-    let transform = d3.zoomIdentity;
+    let tx = 0, ty = 0, tk = 1;
+
+    function toSim(cx: number, cy: number): [number, number] {
+      return [(cx - tx) / tk, (cy - ty) / tk];
+    }
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
       ctx.save();
-      ctx.translate(transform.x, transform.y);
-      ctx.scale(transform.k, transform.k);
+      ctx.translate(tx, ty);
+      ctx.scale(tk, tk);
 
       links.forEach((l: any) => {
         ctx.beginPath();
         ctx.moveTo(l.source.x, l.source.y);
         ctx.lineTo(l.target.x, l.target.y);
         ctx.strokeStyle = "rgba(77,255,180,0.15)";
-        ctx.lineWidth = 1 / transform.k;
+        ctx.lineWidth = 1 / tk;
         ctx.stroke();
       });
 
       nodes.forEach((n: any) => {
-        const color  = COLORS[n.group] ?? "#fff";
+        const color    = COLORS[n.group] ?? "#fff";
         const isCenter = n.group === 0;
-
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, 2 * Math.PI);
         ctx.fillStyle = isCenter ? "rgba(77,255,180,0.15)" : color + "33";
         ctx.fill();
         if (isCenter) {
           ctx.strokeStyle = "#4DFFB4";
-          ctx.lineWidth = 1.5 / transform.k;
+          ctx.lineWidth   = 1.5 / tk;
           ctx.stroke();
         }
-
-        const fs = (isCenter ? 13 : 10) / transform.k;
-        ctx.font = `${isCenter ? 600 : 400} ${fs}px "Fira Code", monospace`;
-        ctx.fillStyle = color;
-        ctx.textAlign = "center";
+        const fs = (isCenter ? 13 : 10) / tk;
+        ctx.font         = `${isCenter ? 600 : 400} ${fs}px "Fira Code", monospace`;
+        ctx.fillStyle    = color;
+        ctx.textAlign    = "center";
         ctx.textBaseline = "top";
-        ctx.fillText(n.id, n.x, n.y + n.r + 3 / transform.k);
+        ctx.fillText(n.id, n.x, n.y + n.r + 3 / tk);
       });
 
       ctx.restore();
@@ -136,86 +138,102 @@ export default function Skills() {
 
     sim.on("tick", draw);
 
-    // Zoom
-    const zoom = d3.zoom<HTMLCanvasElement, unknown>()
-      .scaleExtent([0.3, 4])
-      .on("zoom", e => { transform = e.transform; draw(); });
-
-    d3.select(canvas).call(zoom);
-
-    // Drag — manual to avoid conflict with zoom
-    let dragging: any = null;
-
-    function toSim(cx: number, cy: number) {
-      return transform.invert([cx, cy]);
+    function getPos(e: MouseEvent | TouchEvent): [number, number] {
+      const rect = canvas.getBoundingClientRect();
+      const src  = "touches" in e ? (e as TouchEvent).touches[0] : (e as MouseEvent);
+      return [src.clientX - rect.left, src.clientY - rect.top];
     }
 
     function hitNode(cx: number, cy: number) {
       const [sx, sy] = toSim(cx, cy);
-      return nodes.find(n => Math.hypot(n.x - sx, n.y - sy) < n.r + 10);
+      return nodes.find((n: any) => Math.hypot(n.x - sx, n.y - sy) < n.r + 10);
     }
 
-    function pos(e: MouseEvent | TouchEvent) {
-      const rect = canvas.getBoundingClientRect();
-      const src  = "touches" in e ? e.touches[0] : e;
-      return [src.clientX - rect.left, src.clientY - rect.top];
-    }
+    let dragging: any  = null;
+    let panning        = false;
+    let lastPan: [number, number] = [0, 0];
 
     const onDown = (e: MouseEvent | TouchEvent) => {
-      const [cx, cy] = pos(e);
+      const [cx, cy] = getPos(e);
       const node = hitNode(cx, cy);
-      if (!node) return;
+      if (node) {
+        dragging = node;
+        node.fx  = node.x;
+        node.fy  = node.y;
+        sim.alphaTarget(0.3).restart();
+      } else {
+        panning = true;
+        lastPan = [cx, cy];
+      }
       e.preventDefault();
-      e.stopPropagation();
-      dragging = node;
-      node.fx = node.x;
-      node.fy = node.y;
-      sim.alphaTarget(0.3).restart();
     };
 
     const onMove = (e: MouseEvent | TouchEvent) => {
-      if (!dragging) return;
-      e.preventDefault();
-      const [cx, cy] = pos(e);
-      const [sx, sy] = toSim(cx, cy);
-      dragging.fx = sx;
-      dragging.fy = sy;
+      const [cx, cy] = getPos(e);
+      if (dragging) {
+        const [sx, sy] = toSim(cx, cy);
+        dragging.fx = sx;
+        dragging.fy = sy;
+        e.preventDefault();
+      } else if (panning) {
+        tx += cx - lastPan[0];
+        ty += cy - lastPan[1];
+        lastPan = [cx, cy];
+        draw();
+        e.preventDefault();
+      }
     };
 
     const onUp = () => {
-      if (!dragging) return;
-      sim.alphaTarget(0);
-      dragging.fx = null;
-      dragging.fy = null;
-      dragging = null;
+      if (dragging) {
+        sim.alphaTarget(0);
+        dragging.fx = null;
+        dragging.fy = null;
+        dragging    = null;
+      }
+      panning = false;
     };
 
-    canvas.addEventListener("mousedown",  onDown);
-    canvas.addEventListener("mousemove",  onMove);
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const [cx, cy] = getPos(e);
+      const factor   = e.deltaY < 0 ? 1.1 : 0.9;
+      const newK     = Math.max(0.3, Math.min(4, tk * factor));
+      tx = cx - (cx - tx) * (newK / tk);
+      ty = cy - (cy - ty) * (newK / tk);
+      tk = newK;
+      draw();
+    };
+
+    canvas.addEventListener("mousedown",  onDown, { passive: false });
+    canvas.addEventListener("mousemove",  onMove, { passive: false });
     canvas.addEventListener("mouseup",    onUp);
+    canvas.addEventListener("mouseleave", onUp);
     canvas.addEventListener("touchstart", onDown, { passive: false });
     canvas.addEventListener("touchmove",  onMove, { passive: false });
     canvas.addEventListener("touchend",   onUp);
+    canvas.addEventListener("wheel",      onWheel, { passive: false });
 
-    // Warmup then zoom to fit
+    // Warmup + fit
     sim.tick(150);
-    draw();
-    const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y);
+    const xs = nodes.map((n: any) => n.x), ys = nodes.map((n: any) => n.y);
     const x0 = Math.min(...xs) - 40, x1 = Math.max(...xs) + 40;
     const y0 = Math.min(...ys) - 40, y1 = Math.max(...ys) + 40;
-    const scale = Math.min(0.95, Math.min(W / (x1 - x0), H / (y1 - y0)));
-    const tx = (W - scale * (x0 + x1)) / 2;
-    const ty = (H - scale * (y0 + y1)) / 2;
-    d3.select(canvas).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+    tk = Math.min(0.9, Math.min(W / (x1 - x0), H / (y1 - y0)));
+    tx = (W - tk * (x0 + x1)) / 2;
+    ty = (H - tk * (y0 + y1)) / 2;
+    draw();
 
     return () => {
       sim.stop();
       canvas.removeEventListener("mousedown",  onDown);
       canvas.removeEventListener("mousemove",  onMove);
       canvas.removeEventListener("mouseup",    onUp);
+      canvas.removeEventListener("mouseleave", onUp);
       canvas.removeEventListener("touchstart", onDown);
       canvas.removeEventListener("touchmove",  onMove);
       canvas.removeEventListener("touchend",   onUp);
+      canvas.removeEventListener("wheel",      onWheel);
     };
   }, []);
 
