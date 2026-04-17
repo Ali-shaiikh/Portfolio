@@ -73,7 +73,7 @@ export default function Skills() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = canvasRef.current!;
     const container = containerRef.current;
     if (!canvas || !container) return;
 
