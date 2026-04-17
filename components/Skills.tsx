@@ -113,12 +113,9 @@ export default function Skills() {
       {/* Force graph */}
       <div className="px-6 md:px-12 lg:px-24">
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.8 }}
+          <div
             className="glass"
             ref={containerRef}
-            style={{ touchAction: "none" }}
           >
             <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
               <span className="dot-live" />
@@ -172,7 +169,7 @@ export default function Skills() {
               d3AlphaDecay={0.02}
               d3VelocityDecay={0.3}
             />
-          </motion.div>
+          </div>
           <p className="mono text-xs text-[var(--text-dim)] text-center mt-3">drag nodes · scroll to zoom</p>
         </div>
       </div>
