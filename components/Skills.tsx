@@ -72,6 +72,7 @@ const GROUP_COLORS: Record<number, string> = {
 
 export default function Skills() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const graphRef     = useRef<any>(null);
   const [graphWidth, setGraphWidth] = useState(800);
   const graphData = useMemo(() => ({ nodes: GRAPH_NODES, links: GRAPH_LINKS }), []);
 
@@ -122,6 +123,7 @@ export default function Skills() {
               <span className="mono text-xs text-[var(--text-muted)]">skill constellation — drag to explore</span>
             </div>
             <ForceGraph2D
+              ref={graphRef}
               graphData={graphData}
               width={graphWidth}
               height={460}
@@ -131,6 +133,7 @@ export default function Skills() {
               enablePanInteraction={true}
               enablePointerInteraction={true}
               warmupTicks={100}
+              onEngineStop={() => graphRef.current?.zoomToFit(400, 40)}
               linkColor={() => "rgba(77,255,180,0.12)"}
               nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
                 const label    = node.id as string;
