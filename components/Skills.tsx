@@ -116,7 +116,7 @@ export default function Skills() {
           <motion.div
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
             viewport={{ once: true }} transition={{ duration: 0.8 }}
-            className="glass overflow-hidden"
+            className="glass"
             ref={containerRef}
           >
             <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
@@ -128,6 +128,11 @@ export default function Skills() {
               width={graphWidth}
               height={460}
               backgroundColor="transparent"
+              enableNodeDrag={true}
+              enableZoomInteraction={true}
+              enablePanInteraction={true}
+              enablePointerInteraction={true}
+              warmupTicks={100}
               linkColor={() => "rgba(77,255,180,0.12)"}
               nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
                 const label    = node.id as string;
