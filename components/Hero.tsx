@@ -44,8 +44,8 @@ export default function Hero() {
       <div className="max-w-6xl mx-auto w-full pt-32 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-16 items-center">
 
-          {/* Text */}
-          <div>
+          {/* Text — order-2 on mobile so photo shows first */}
+          <div className="order-2 lg:order-1">
             <motion.div
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -147,10 +147,10 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.22,1,0.36,1] }}
-            className="relative hidden lg:block"
+            className="relative flex justify-center lg:block order-1 lg:order-2"
           >
             {/* Outer wrapper with room for floating elements */}
-            <div className="relative w-80 h-96 flex items-center justify-center">
+            <div className="relative w-56 h-72 lg:w-80 lg:h-96 flex items-center justify-center">
 
               {/* Rotating dashed ring */}
               <motion.div
