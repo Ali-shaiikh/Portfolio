@@ -17,11 +17,13 @@ export default function Hero() {
   const [history, setHistory] = useState<{ cmd: string; out: string[] }[]>([
     { cmd: "", out: ["ALI.INIT v1.0 — type 'help' to explore"] },
   ]);
-  const inputRef  = useRef<HTMLInputElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef    = useRef<HTMLInputElement>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
   }, [history]);
 
   const submit = (e: React.FormEvent) => {
@@ -96,7 +98,7 @@ export default function Hero() {
                 <div className="w-3 h-3 rounded-full bg-[#28C840]" />
                 <span className="mono text-xs text-[var(--text-muted)] ml-2">ali@init ~ terminal</span>
               </div>
-              <div className="px-4 py-4 h-48 overflow-y-auto mono text-xs space-y-1.5">
+              <div ref={terminalRef} className="px-4 py-4 h-48 overflow-y-auto mono text-xs space-y-1.5">
                 {history.map((h, i) => (
                   <div key={i}>
                     {h.cmd && (
@@ -110,7 +112,6 @@ export default function Hero() {
                     ))}
                   </div>
                 ))}
-                <div ref={bottomRef} />
               </div>
               <form onSubmit={submit} className="flex items-center gap-2 px-4 py-3 border-t border-[var(--border)]">
                 <span className="text-[var(--accent)] mono text-xs">❯</span>
