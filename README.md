@@ -2,7 +2,7 @@
 
 > Not a website *about* an AI engineer. It *is* what an AI engineer would build for themselves.
 
-Live at → **[your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)**
+Live at → **[ali-shaikh.vercel.app](https://ali-shaikh.vercel.app)**
 
 ---
 
