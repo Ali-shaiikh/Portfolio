@@ -36,12 +36,12 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-[1000] px-6 py-4"
         style={{
           background: scrolled ? "rgba(8,8,15,0.85)" : "transparent",
-          backdropFilter: scrolled ? "blur(20px)" : "none",
+          backdropFilter: scrolled ? "blur(12px)" : "none",
           borderBottom: scrolled ? "1px solid var(--border)" : "none",
           transition: "background 0.4s, backdrop-filter 0.4s, border-bottom 0.4s",
         }}
       >
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="site-container flex items-center justify-between">
           {/* Logo */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

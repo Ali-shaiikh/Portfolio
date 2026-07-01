@@ -38,19 +38,18 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 ::selection { background: var(--accent-dim); color: var(--accent); }
 
-/* Noise texture background */
+/* Radial glow behind hero — the grain texture itself now lives only in
+   body::before, stacking two feTurbulence noise layers made the whole
+   page read as hazy/blurry rather than sharp with subtle grain */
 .grid-bg {
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(77,255,180,0.06) 0%, transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
-  background-size: auto, 300px 300px;
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(77,255,180,0.06) 0%, transparent 60%);
 }
 
 /* Glass card */
 .glass {
   background: var(--surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: 12px;
   transition: border-color 0.3s ease, background 0.3s ease;
@@ -113,6 +112,14 @@ body::before {
 
 /* Horizontal divider */
 hr.dim { border: none; border-top: 1px solid var(--border); }
+
+/* Fluid content container — scales with viewport instead of sitting
+   in a fixed 1152px column that leaves large dead gutters on wide screens */
+.site-container {
+  width: 100%;
+  max-width: min(1680px, 92vw);
+  margin-inline: auto;
+}
 
 /* Glowing dot */
 .dot-live {

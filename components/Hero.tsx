@@ -1,8 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
+import { IconTerminal2, IconChevronDown } from "@tabler/icons-react";
 import Image from "next/image";
+import Parallax from "./Parallax";
+
+const TERMINAL_INTRO_SEEN_KEY = "ali-portfolio-terminal-intro-seen";
 
 const CMDS: Record<string, string[]> = {
   whoami:   ["Ali Shaikh — AI Engineer, CS Undergraduate (Mumbai)", "Co-Facilitator @ Google Cloud Arcade · Co-Founder @ ArcadeOps", "Building LLM apps, RAG pipelines, and scalable AI systems."],
@@ -20,14 +24,66 @@ export default function Hero() {
   const inputRef    = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
+  const [showHint, setShowHint]     = useState(false);
+  const [autoTyping, setAutoTyping] = useState(false);
+  const introDoneRef  = useRef(false);
+  const hintTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const demoTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const typeTimerRef  = useRef<ReturnType<typeof setInterval> | null>(null);
+
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [history]);
 
+  // First-time-visitor guide: point out the terminal is interactive, then
+  // demonstrate it by auto-typing "help" if nobody has touched it yet.
+  useEffect(() => {
+    if (localStorage.getItem(TERMINAL_INTRO_SEEN_KEY)) return;
+    hintTimerRef.current = setTimeout(() => setShowHint(true), 2200);
+    demoTimerRef.current = setTimeout(() => {
+      const word = "help";
+      setAutoTyping(true);
+      setShowHint(false);
+      let i = 0;
+      typeTimerRef.current = setInterval(() => {
+        i++;
+        setInput(word.slice(0, i));
+        if (i >= word.length) {
+          clearInterval(typeTimerRef.current!);
+          setTimeout(() => {
+            setHistory(h => [...h, { cmd: word, out: CMDS[word] }]);
+            setInput("");
+            setAutoTyping(false);
+            dismissIntro();
+          }, 450);
+        }
+      }, 140);
+    }, 5800);
+    return () => {
+      if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+      if (demoTimerRef.current) clearTimeout(demoTimerRef.current);
+      if (typeTimerRef.current) clearInterval(typeTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const dismissIntro = () => {
+    if (introDoneRef.current) return;
+    introDoneRef.current = true;
+    setShowHint(false);
+    setAutoTyping(false);
+    setInput(prev => (prev === "help".slice(0, prev.length) ? "" : prev));
+    if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+    if (demoTimerRef.current) clearTimeout(demoTimerRef.current);
+    if (typeTimerRef.current) clearInterval(typeTimerRef.current);
+    localStorage.setItem(TERMINAL_INTRO_SEEN_KEY, "true");
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    dismissIntro();
     const cmd = input.trim().toLowerCase();
     if (!cmd) return;
     if (cmd === "clear") {
@@ -40,10 +96,10 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen grid-bg flex flex-col justify-center overflow-hidden px-6 md:px-12 lg:px-24">
+    <section id="top" className="relative min-h-screen grid-bg flex flex-col justify-center overflow-hidden px-6 md:px-12 lg:px-24">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent opacity-60" />
 
-      <div className="max-w-6xl mx-auto w-full pt-32 pb-20">
+      <div className="site-container pt-32 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-16 items-center">
 
           {/* Text — order-2 on mobile so photo shows first */}
@@ -89,14 +145,39 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.0 }}
-              className="glass max-w-md cursor-text"
+              className="relative glass max-w-md cursor-text"
               onClick={() => inputRef.current?.focus()}
             >
+              {/* First-visit guide: a terminal-flavored hint, not a generic "?" tooltip */}
+              <AnimatePresence>
+                {showHint && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute -top-11 left-0 flex items-center gap-2 glass px-3 py-2 border-[var(--border-2)]"
+                  >
+                    <IconTerminal2 size={14} className="text-[var(--accent)]" />
+                    <span className="mono text-xs text-[var(--text)] whitespace-nowrap">this is interactive — try typing <span className="text-[var(--accent)]">help</span></span>
+                    <motion.span
+                      animate={{ y: [0, 3, 0] }} transition={{ duration: 1.2, repeat: Infinity }}
+                      className="text-[var(--accent)]"
+                    >
+                      <IconChevronDown size={14} />
+                    </motion.span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
                 <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
                 <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
                 <div className="w-3 h-3 rounded-full bg-[#28C840]" />
                 <span className="mono text-xs text-[var(--text-muted)] ml-2">ali@init ~ terminal</span>
+                {autoTyping && (
+                  <span className="flex items-center gap-1.5 ml-auto">
+                    <span className="dot-live" style={{ width: 5, height: 5 }} />
+                    <span className="mono text-[10px] text-[var(--text-dim)] tracking-widest">DEMO</span>
+                  </span>
+                )}
               </div>
               <div ref={terminalRef} className="px-4 py-4 h-48 overflow-y-auto mono text-xs space-y-1.5">
                 {history.map((h, i) => (
@@ -116,10 +197,13 @@ export default function Hero() {
               <form onSubmit={submit} className="flex items-center gap-2 px-4 py-3 border-t border-[var(--border)]">
                 <span className="text-[var(--accent)] mono text-xs">❯</span>
                 <input
-                  ref={inputRef} value={input} onChange={e => setInput(e.target.value)}
-                  className="flex-1 bg-transparent mono text-xs text-[var(--text)] outline-none placeholder-[var(--text-dim)]"
+                  ref={inputRef} value={input}
+                  onChange={e => { setInput(e.target.value); dismissIntro(); }}
+                  disabled={autoTyping}
+                  className="flex-1 bg-transparent mono text-xs text-[var(--text)] outline-none placeholder-[var(--text-dim)] disabled:opacity-100"
                   placeholder="type a command..." autoComplete="off" spellCheck={false}
                 />
+                {autoTyping && <span className="cursor-blink text-[var(--accent)] mono text-xs">▌</span>}
               </form>
             </motion.div>
 
@@ -145,10 +229,10 @@ export default function Hero() {
           </div>
 
           {/* Photo */}
+          <Parallax speed={0.1} className="relative flex justify-center lg:block order-1 lg:order-2">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.22,1,0.36,1] }}
-            className="relative flex justify-center lg:block order-1 lg:order-2"
           >
             {/* Outer wrapper with room for floating elements */}
             <div className="relative w-56 h-72 lg:w-80 lg:h-96 flex items-center justify-center">
@@ -250,6 +334,7 @@ export default function Hero() {
 
             </div>
           </motion.div>
+          </Parallax>
 
         </div>
       </div>

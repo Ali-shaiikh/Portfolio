@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconBrandGithub, IconExternalLink } from "@tabler/icons-react";
+import Parallax from "./Parallax";
 
 const PROJECTS = [
   {
@@ -85,7 +86,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="py-32 px-6 md:px-12 lg:px-24">
-      <div className="max-w-6xl mx-auto">
+      <div className="site-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6 }}
@@ -109,9 +110,11 @@ export default function Projects() {
                 onMouseLeave={handleMouseLeave}
               >
                 <div className="flex items-start gap-6 py-8 hover:bg-[var(--surface)] transition-colors px-4 -mx-4 rounded">
-                  <span className="display text-6xl text-[var(--text-dim)] group-hover:text-[var(--accent)] transition-colors leading-none mt-1 select-none">
-                    {project.num}
-                  </span>
+                  <Parallax speed={0.05 + (i % 3) * 0.02}>
+                    <span className="display text-6xl text-[var(--text-dim)] group-hover:text-[var(--accent)] transition-colors leading-none mt-1 select-none block">
+                      {project.num}
+                    </span>
+                  </Parallax>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-baseline justify-between gap-4">
                       <h3 className="display text-4xl group-hover:text-[var(--accent)] transition-colors">

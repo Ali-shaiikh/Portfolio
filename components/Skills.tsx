@@ -78,7 +78,7 @@ export default function Skills() {
     if (!canvas || !container) return;
 
     const W = container.clientWidth;
-    const H = 460;
+    const H = 540;
     canvas.width  = W;
     canvas.height = H;
     const ctx = canvas.getContext("2d")!;
@@ -87,10 +87,10 @@ export default function Skills() {
     const links: any[] = RAW_LINKS.map(l => ({ ...l }));
 
     const sim = forceSimulation(nodes)
-      .force("link",      forceLink(links).id((d: any) => d.id).distance(70).strength(0.6))
-      .force("charge",    forceManyBody().strength(-180))
+      .force("link",      forceLink(links).id((d: any) => d.id).distance(100).strength(0.5))
+      .force("charge",    forceManyBody().strength(-320))
       .force("center",    forceCenter(W / 2, H / 2))
-      .force("collision", forceCollide((d: any) => d.r + 12));
+      .force("collision", forceCollide((d: any) => d.r + 26));
 
     let tx = 0, ty = 0, tk = 1;
 
@@ -240,7 +240,7 @@ export default function Skills() {
   return (
     <section id="skills" className="py-32 overflow-hidden">
       <div className="px-6 md:px-12 lg:px-24">
-        <div className="max-w-6xl mx-auto">
+        <div className="site-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6 }}
@@ -265,7 +265,7 @@ export default function Skills() {
 
       {/* Force graph */}
       <div className="px-6 md:px-12 lg:px-24">
-        <div className="max-w-6xl mx-auto">
+        <div className="site-container">
           <div className="glass" ref={containerRef}>
             <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
               <span className="dot-live" />

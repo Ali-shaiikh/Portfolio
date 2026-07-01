@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import Parallax from "./Parallax";
 
 const BIO_LINES = [
   "$ cat about.txt",
@@ -42,7 +43,7 @@ export default function About() {
 
   return (
     <section id="about" className="py-32 px-6 md:px-12 lg:px-24">
-      <div className="max-w-6xl mx-auto">
+      <div className="site-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6 }}
@@ -58,9 +59,11 @@ export default function About() {
             initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.7 }}
           >
-            <h2 className="display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-8">
-              I BUILD<br />THINGS<br /><span className="text-[var(--accent)]">THAT<br />THINK.</span>
-            </h2>
+            <Parallax speed={0.08}>
+              <h2 className="display text-[clamp(2.5rem,6vw,5rem)] leading-none mb-8">
+                I BUILD<br />THINGS<br /><span className="text-[var(--accent)]">THAT<br />THINK.</span>
+              </h2>
+            </Parallax>
             <p className="text-[var(--text-muted)] leading-relaxed mb-5 max-w-sm">
               Final year Computer Science student with an obsession for AI that actually works — not demos, but deployed systems.
             </p>

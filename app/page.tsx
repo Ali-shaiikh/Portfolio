@@ -3,6 +3,7 @@ import CustomCursor    from "@/components/CustomCursor";
 import KonamiEgg      from "@/components/KonamiEgg";
 import Navbar          from "@/components/Navbar";
 import ScrollProgress  from "@/components/ScrollProgress";
+import SectionDock     from "@/components/SectionDock";
 import Hero            from "@/components/Hero";
 import About           from "@/components/About";
 import Skills          from "@/components/Skills";
@@ -20,6 +21,7 @@ export default function Home() {
       <KonamiEgg />
       <ScrollProgress />
       <Navbar />
+      <SectionDock />
       <main>
         <Hero />
         <About />
@@ -30,7 +32,7 @@ export default function Home() {
         <Contact />
       </main>
       <footer className="border-t border-[var(--border)] py-8 px-6 md:px-12 lg:px-24">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="site-container flex items-center justify-between">
           <span className="mono text-xs text-[var(--text-dim)]">ALI.SH_ © 2025</span>
           <LikeButton />
           <span className="mono text-xs text-[var(--text-dim)]">

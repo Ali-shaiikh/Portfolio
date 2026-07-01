@@ -1,5 +1,6 @@
 "use client";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const COMMITS = [
   {
@@ -29,9 +30,11 @@ const COMMITS = [
 ];
 
 export default function Experience() {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
   return (
     <section id="experience" className="py-32 px-6 md:px-12 lg:px-24">
-      <div className="max-w-6xl mx-auto">
+      <div className="site-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6 }}
@@ -55,7 +58,8 @@ export default function Experience() {
                 key={commit.hash}
                 initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="px-6 py-6 hover:bg-[var(--surface)] transition-colors group"
+                className="px-6 py-6 hover:bg-[var(--surface)] transition-colors group cursor-pointer"
+                onClick={() => setExpanded(expanded === commit.hash ? null : commit.hash)}
               >
                 <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
                   <div className="flex items-center gap-3">
@@ -67,19 +71,36 @@ export default function Experience() {
                       {commit.branch}
                     </span>
                   </div>
-                  <span className="mono text-xs text-[var(--text-dim)]">{commit.date}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="mono text-xs text-[var(--text-dim)]">{commit.date}</span>
+                    <span className="mono text-xs text-[var(--text-dim)]">
+                      {expanded === commit.hash ? "[ collapse ]" : "[ show diff ]"}
+                    </span>
+                  </div>
                 </div>
-                <p className="mono text-sm text-[var(--text)] group-hover:text-[var(--accent)] transition-colors mb-2">
+                <p className="mono text-sm text-[var(--text)] group-hover:text-[var(--accent)] transition-colors">
                   {commit.message}
                 </p>
-                <p className="mono text-xs text-[var(--text-muted)] leading-relaxed pl-4 border-l border-[var(--border)] mb-3">
-                  {commit.body}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {commit.tags.map(tag => (
-                    <span key={tag} className="mono text-xs text-[var(--text-dim)]">#{tag}</span>
-                  ))}
-                </div>
+                <AnimatePresence>
+                  {expanded === commit.hash && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mono text-xs text-[var(--text-muted)] leading-relaxed pl-4 border-l border-[var(--border)] mt-3 mb-3">
+                        {commit.body}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {commit.tags.map(tag => (
+                          <span key={tag} className="mono text-xs text-[var(--text-dim)]">#{tag}</span>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             ))}
           </div>
